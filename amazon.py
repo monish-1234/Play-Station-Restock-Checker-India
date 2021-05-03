@@ -50,9 +50,9 @@ def lambda_handler(url):
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
         print ("Captcha error "+ current_time +" Current IP Address = " + ipadd)
-        titlee='Captcha Error'
-        desc=url+"Amazon Requesting captcha. Retrying in 2 minutes. Local Time = "+ current_time +" Current IP Address = "+ ipadd
-        sendwebhook(titlee,desc)
+        #titlee='Captcha Error'
+        #desc=url+"Amazon Requesting captcha. Retrying in 2 minutes. Local Time = "+ current_time +" Current IP Address = "+ ipadd
+        #sendwebhook(titlee,desc)
         sleep(120) #sleeps for 2 mins
         return None
     
@@ -61,9 +61,9 @@ def lambda_handler(url):
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
         print ("Not Available on Local Time = "+ current_time +" Current IP Address = " + ipadd)
-        titlee='Play Station 5 Still Out Of Stock :/'
-        desc=url+" is not in stock yet. Local Time = "+ current_time +" Current IP Address = " + ipadd
-        sendwebhook(titlee,desc)
+        #titlee='Play Station 5 Still Out Of Stock :/'
+        #desc=url+" is not in stock yet. Local Time = "+ current_time +" Current IP Address = " + ipadd
+        #sendwebhook(titlee,desc)
         sleep(420) #retries every 7 mins to avoid Amazon IP Ban
     else:
         now = datetime.now()
