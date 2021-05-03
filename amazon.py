@@ -40,9 +40,9 @@ def lambda_handler(url):
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
         print("IP Blocked by Amazon. Sleeping for 60 mins.", current_time)
-        titlee='IP Blocked'
-        desc="Our IP is Blocked by Amazon. Going to sleep for 60 mins.Local Time = "+ current_time +" Current IP Address = " + ipadd
-        sendwebhook(titlee,desc)
+        #titlee='IP Blocked'
+        #desc="Our IP is Blocked by Amazon. Going to sleep for 60 mins.Local Time = "+ current_time +" Current IP Address = " + ipadd
+        #sendwebhook(titlee,desc)
         sleep(3600) #sleep for 60 mins if Amazon Blocks Our IP
         return None
 
