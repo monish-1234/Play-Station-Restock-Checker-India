@@ -2,6 +2,10 @@ import requests
 from time import sleep
 from discord_webhook import DiscordWebhook, DiscordEmbed
 from datetime import datetime
+from requests import get
+
+ipadd = get('https://api.ipify.org').text
+print(ipadd)
 
 with open('url.txt', 'r') as file:
     urlss=file.read().replace("\n", '').split(",")
@@ -34,7 +38,7 @@ def lambda_handler(url):
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
         print("IP Blocked by Amazon. Sleeping for 60 mins.", current_time)
-        embed = DiscordEmbed(title='IP Blocked ', description=" Our IP is Blocked by Amazon. Going to sleep for 30 mins."+ current_time, color=14973201)
+        embed = DiscordEmbed(title='IP Blocked ', description=" Our IP is Blocked by Amazon. Going to sleep for 30 mins. Local Time = "+ current_time +" Current IP Address = " + ipadd, color=14973201)
         webhook.add_embed(embed)
         response = webhook.execute() #send Discord Notification
         sleep(3600) #sleep for 60 mins if Amazon Blocks Our IP
@@ -44,6 +48,9 @@ def lambda_handler(url):
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
         print ('Captcha error ',current_time)
+        embed = DiscordEmbed(title='Captcha Error', description=url+"Amazon Requesting captcha. Retrying in 2 minutes. Local Time = "+ current_time +" Current IP Address = "+ ipadd, color=14973201)
+        webhook.add_embed(embed)
+        response = webhook.execute()
         sleep(120) #sleeps for 2 mins
         return None
     
@@ -52,9 +59,9 @@ def lambda_handler(url):
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
         print ('Not Available on ',current_time)
-        #embed = DiscordEmbed(title='Play Station 5 Still Out Of Stock :/', description=url+" is not in stock yet.", color=14973201)
-        #webhook.add_embed(embed)
-        #response = webhook.execute()
+        embed = DiscordEmbed(title='Play Station 5 Still Out Of Stock :/', description=url+" is not in stock yet. Local Time = "+ current_time +" Current IP Address = "+ ipadd, color=14973201)
+        webhook.add_embed(embed)
+        response = webhook.execute()
         sleep(420) #retries every 7 mins to avoid Amazon IP Ban
     else:
         now = datetime.now()
@@ -62,7 +69,7 @@ def lambda_handler(url):
         print ('Available on ',current_time)
         print(r.text)
         print(r.status_code)
-        embed = DiscordEmbed(title='Play Station 5  | Back in Stock |', description=url+" is Back In Stock @ "+current_time, color=14973201)
+        embed = DiscordEmbed(title='Play Station 5  | Back in Stock |', description=url+" is Back In Stock @ Local Time = "+ current_time +" Current IP Address = "+ ipadd, color=14973201)
         webhook.add_embed(embed)
         response = webhook.execute() #send Discord Notification
 
