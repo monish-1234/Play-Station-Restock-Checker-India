@@ -15,7 +15,7 @@ python amazon.py
 ```
 5. Open another terminal and run 
 ```bash
-python flikart.py
+python flipkart.py
 ```
 
 ## A USER FRIENDLY VIDEO ON THE SCRIPT USAGE COMING SOON(03-05-21)
