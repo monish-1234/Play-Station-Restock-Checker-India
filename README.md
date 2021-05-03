@@ -20,4 +20,4 @@ python flikart.py
 
 ## A USER FRIENDLY VIDEO ON THE SCRIPT USAGE COMING SOON(03-05-21)
 
-Until then ask figure out the script yourself or request help from a tech savy friend or raise an issue, I'll help you out.
+Until then figure out the script yourself or request help from a tech savy friend or raise an issue, I'll help you out.
