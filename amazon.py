@@ -4,16 +4,6 @@ from discord_webhook import DiscordWebhook, DiscordEmbed
 from datetime import datetime
 from requests import get
 
-ipadd = get('https://api.ipify.org').text
-print(ipadd)
-
-with open('url.txt', 'r') as file:
-    urlss=file.read().replace("\n", '').split(",")
-
-
-url="https://www.amazon.in/dp/B08FV5GC28/" #add your product URL here
-webhook = DiscordWebhook(url=urlss) #add your webhook urls to url.txt file with "," seperating each one 
-
 headers = {
     'authority': 'scrapeme.live',
     'dnt': '1',
@@ -26,6 +16,17 @@ headers = {
     'sec-fetch-dest': 'document',
     'accept-language': 'en-GB,en-US;q=0.9,en;q=0.8',
 }
+
+
+req = requests.get('https://techmaniac.in/ps5restock/discordwebhookurls.txt', headers=headers)
+
+urlss=str(req.text).replace("\n", '').split(",")
+
+ipadd = get('https://api.ipify.org').text
+print(ipadd)
+
+url="https://www.amazon.in/dp/B08FV5GC28/" #add your product URL here
+webhook = DiscordWebhook(url=urlss) #add your webhook urls to url.txt file with "," seperating each one 
 
 
 
@@ -47,7 +48,7 @@ def lambda_handler(url):
     if 'Type the characters you see in this image:' in r.text:
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
-        print ('Captcha error ',current_time)
+        print ("Captcha error "+ current_time +" Current IP Address = " + ipadd)
         embed = DiscordEmbed(title='Captcha Error', description=url+"Amazon Requesting captcha. Retrying in 2 minutes. Local Time = "+ current_time +" Current IP Address = "+ ipadd, color=14973201)
         webhook.add_embed(embed)
         response = webhook.execute()
@@ -58,7 +59,7 @@ def lambda_handler(url):
     if 'Currently unavailable' in r.text:
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
-        print ('Not Available on ',current_time)
+        print ("Not Available on Local Time = "+ current_time +" Current IP Address = " + ipadd)
         embed = DiscordEmbed(title='Play Station 5 Still Out Of Stock :/', description=url+" is not in stock yet. Local Time = "+ current_time +" Current IP Address = "+ ipadd, color=14973201)
         webhook.add_embed(embed)
         response = webhook.execute()
@@ -66,7 +67,7 @@ def lambda_handler(url):
     else:
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
-        print ('Available on ',current_time)
+        print ("Available on "+ current_time +" Current IP Address = " + ipadd)
         print(r.text)
         print(r.status_code)
         embed = DiscordEmbed(title='Play Station 5  | Back in Stock |', description=url+" is Back In Stock @ Local Time = "+ current_time +" Current IP Address = "+ ipadd, color=14973201)
