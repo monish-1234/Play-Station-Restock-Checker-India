@@ -17,16 +17,19 @@ headers = {
     'accept-language': 'en-GB,en-US;q=0.9,en;q=0.8',
 }
 
+def sendwebhook(titlee,desc):
+    req = requests.get('https://techmaniac.in/ps5restock/discordwebhookurls.txt', headers=headers)
+    urlss=str(req.text).replace("\n", '').split(",")
+    webhook = DiscordWebhook(url=urlss) #Get Webhook URLs
+    embed = DiscordEmbed(title=titlee, description=desc, color=14973201)
+    webhook.add_embed(embed)
+    response = webhook.execute() #send Discord Notification
 
-req = requests.get('https://techmaniac.in/ps5restock/discordwebhookurls.txt', headers=headers)
-
-urlss=str(req.text).replace("\n", '').split(",")
 
 ipadd = get('https://api.ipify.org').text
 print(ipadd)
 
 url="https://www.flipkart.com/sony-playstation-5-cfi-1008a01r-825-gb-astro-s-playroom/p/itma0201bdea62fa" #add your product URL here
-webhook = DiscordWebhook(url=urlss) #add your webhook urls to url.txt file with "," seperating each one 
 
 
 def lambda_handler(url):
@@ -38,29 +41,29 @@ def lambda_handler(url):
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
         print("IP Blocked by Flipkart. Sleeping for 60 mins. Local Time = "+ current_time +" Current IP Address = " + ipadd)
-        embed = DiscordEmbed(title='IP Blocked ', description=" Our IP is Blocked by Flipkart. Going to sleep for 60 mins.Local Time = "+ current_time +" Current IP Address = " + ipadd, color=14973201)
-        webhook.add_embed(embed)
-        response = webhook.execute() #send Discord Notification
+        titlee='IP Blocked'
+        desc="Our IP is Blocked by Flipkart. Going to sleep for 60 mins.Local Time = "+ current_time +" Current IP Address = " + ipadd
+        sendwebhook(titlee,desc)
         sleep(3600) #sleep for 60 mins if Flipkart Blocks Our IP
+
         return None
                 
     if 'This item is currently out of stock' in r.text:
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
         print ("Not Available on Local Time = "+ current_time +" Current IP Address = " + ipadd)
-        #embed = DiscordEmbed(title='Play Station 5 Still Out Of Stock :/', description=url+" is not in stock yet. Local Time = "+ current_time +" Current IP Address = " + ipadd, color=14973201)
-        #webhook.add_embed(embed)
-        #response = webhook.execute()
+        #titlee='Play Station 5 Still Out Of Stock :/'
+        #desc=url+" is not in stock yet. Local Time = "+ current_time +" Current IP Address = " + ipadd
+        #sendwebhook(titlee,desc)
+
         sleep(420) #retries every 7 mins to avoid Flipkart IP Ban
     else:
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
         print ('Available on ',current_time)
-        print(r.text)
-        print(r.status_code)
-        embed = DiscordEmbed(title='Play Station 5  | Back in Stock |', description=url+" is Back In Stock @ Local Time = "+ current_time +" Current IP Address = " + ipadd, color=14973201)
-        webhook.add_embed(embed)
-        response = webhook.execute() #send Discord Notification
+        titlee='Play Station 5  | Back in Stock |'
+        desc=url+" is Back In Stock @ Local Time = "+ current_time +" Current IP Address = " + ipadd
+        sendwebhook(titlee,desc)
 
 while True:
     lambda_handler(url)
