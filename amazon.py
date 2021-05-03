@@ -36,6 +36,14 @@ def lambda_handler(url):
         response = webhook.execute() #send Discord Notification
         sleep(3600) #sleep for 60 mins if Amazon Blocks Our IP
         return None
+
+    if 'Type the characters you see in this image:' in r.text:
+        now = datetime.now()
+        current_time = now.strftime("%H:%M:%S")
+        print ('Captcha error ',current_time)
+        sleep(120) #sleeps for 2 mins
+        return None
+    
                 
     if 'Currently unavailable' in r.text:
         now = datetime.now()
