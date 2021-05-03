@@ -3,9 +3,12 @@ from time import sleep
 from discord_webhook import DiscordWebhook, DiscordEmbed
 from datetime import datetime
 
+with open('url.txt', 'r') as file:
+    urlss=file.read().replace("\n", '').split(",")
+
 
 url="https://www.amazon.in/dp/B08FV5GC28/" #add your product URL here
-webhook = DiscordWebhook(url='https://ptb.discord.com/api/webhooks/838302393413926974/5oCDOPbPuurc6bP7lYpbcs_kDSYYmU7PMynCZncXBwz03lX38kGSnSHqWwRGHvR3SBoO') #add your webhook url here
+webhook = DiscordWebhook(url=urlss) #add your webhook urls to url.txt file with "," seperating each one 
 
 headers = {
     'authority': 'scrapeme.live',
